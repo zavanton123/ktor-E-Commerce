@@ -81,9 +81,11 @@ class ShippingController {
     }
 
     suspend fun deleteShipping(userId: String, orderId: String) = query {
-        val isExist = ShippingEntity.find {
-            UserTable.id eq userId and (OrdersTable.id eq orderId)
-        }.toList().singleOrNull()
+        val isExist = ShippingEntity
+            .find { UserTable.id eq userId and (OrdersTable.id eq orderId) }
+            .toList()
+            .singleOrNull()
+
         isExist?.delete() ?: orderId.isNotExistException()
     }
 }
