@@ -11,7 +11,7 @@ data class AddOrder(
     val total: Float,
     val shippingCharge: Float,
     val orderStatus: String,
-    val orderItems: MutableList<OrderItem>
+    val orderItems: MutableList<OrderItem>,
 ) {
     fun validation() {
         validate(this) {
@@ -24,4 +24,3 @@ data class AddOrder(
         }
     }
 }
-

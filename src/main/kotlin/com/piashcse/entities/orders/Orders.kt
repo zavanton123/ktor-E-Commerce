@@ -5,7 +5,6 @@ import com.piashcse.entities.base.BaseIntEntityClass
 import com.piashcse.entities.base.BaseIntIdTable
 import com.piashcse.entities.user.UserTable
 import org.jetbrains.exposed.dao.id.EntityID
-import java.util.StringJoiner
 
 object OrdersTable : BaseIntIdTable("orders") {
     val userId = reference("user_id", UserTable.id)
@@ -37,24 +36,27 @@ class OrderEntity(id: EntityID<String>) : BaseIntEntity(id, OrdersTable) {
     var coupon by OrdersTable.coupon
     var status by OrdersTable.status
     var statusCode by OrdersTable.statusCode
+
     fun orderCreatedResponse() = OrderCreatedPayload(id.value)
+
     fun response() = OrderPayload(
-        id.value,
-        paymentId,
-        paymentType,
-        quantity,
-        subTotal,
-        total,
-        shippingCharge,
-        vat,
-        cancelOrder,
-        coupon,
-        status,
-        statusCode
+        orderId = id.value,
+        paymentId = paymentId,
+        paymentType = paymentType,
+        quantity = quantity,
+        subTotal = subTotal,
+        total = total,
+        shippingCharge = shippingCharge,
+        vat = vat,
+        cancelOrder = cancelOrder,
+        coupon = coupon,
+        status = status,
+        statusCode = statusCode
     )
 }
 
 data class OrderCreatedPayload(val orderId: String)
+
 data class OrderPayload(
     val orderId: String,
     val paymentId: String?,
@@ -67,5 +69,5 @@ data class OrderPayload(
     val cancelOrder: Boolean,
     val coupon: String?,
     val status: String,
-    val statusCode: Int
+    val statusCode: Int,
 )

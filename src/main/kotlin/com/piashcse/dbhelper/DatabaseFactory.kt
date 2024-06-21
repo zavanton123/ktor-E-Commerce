@@ -4,7 +4,7 @@ import com.piashcse.entities.ShippingTable
 import com.piashcse.entities.orders.CartItemTable
 import com.piashcse.entities.orders.OrderItemTable
 import com.piashcse.entities.orders.OrdersTable
-import com.piashcse.entities.product.BrandTable
+import com.piashcse.entities.product.BrandsTable
 import com.piashcse.entities.product.ProductImageTable
 import com.piashcse.entities.product.ProductTable
 import com.piashcse.entities.product.WishListTable
@@ -45,7 +45,7 @@ object DatabaseFactory {
                 ProductImageTable,
                 ProductCategoryTable,
                 ProductSubCategoryTable,
-                BrandTable,
+                BrandsTable,
                 CartItemTable,
                 OrdersTable,
                 OrderItemTable,

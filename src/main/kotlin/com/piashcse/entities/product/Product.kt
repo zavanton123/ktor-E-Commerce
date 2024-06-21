@@ -15,7 +15,7 @@ object ProductTable : BaseIntIdTable("product") {
     val productDetail = text("product_detail")
     val categoryId = reference("category_id", ProductCategoryTable.id)
     val subCategoryId = reference("sub_category_id", ProductSubCategoryTable.id).nullable()
-    val brandId = reference("brand_id", BrandTable.id).nullable()
+    val brandId = reference("brand_id", BrandsTable.id).nullable()
     val productCode = text("product_code").nullable()
     val productQuantity = integer("product_quantity")
     val discountPrice = double("discount_price").nullable()

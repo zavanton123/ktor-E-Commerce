@@ -12,7 +12,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.MissingRequestParameterException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
-import java.util.*
+import java.util.Locale
 import org.valiktor.ConstraintViolationException
 import org.valiktor.i18n.mapToMessage
 

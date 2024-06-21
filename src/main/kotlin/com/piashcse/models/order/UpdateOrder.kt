@@ -6,7 +6,9 @@ import org.valiktor.functions.isIn
 import org.valiktor.functions.isNotNull
 import org.valiktor.validate
 
-data class UpdateOrder(@QueryParam("orderStatus") val orderStatus: String) {
+data class UpdateOrder(
+    @QueryParam("orderStatus") val orderStatus: String,
+) {
     fun validation() {
         validate(this) {
             validate(UpdateOrder::orderStatus).isNotNull().isIn(
@@ -21,7 +23,9 @@ data class UpdateOrder(@QueryParam("orderStatus") val orderStatus: String) {
     }
 }
 
-data class OrderId(@QueryParam("orderId") val orderId: String) {
+data class OrderId(
+    @QueryParam("orderId") val orderId: String,
+) {
     fun validation() {
         validate(this) {
             validate(OrderId::orderId).isNotNull()

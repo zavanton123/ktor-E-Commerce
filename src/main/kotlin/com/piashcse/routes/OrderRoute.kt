@@ -1,6 +1,9 @@
 package com.piashcse.routes
 
-import com.papsign.ktor.openapigen.route.path.auth.*
+import com.papsign.ktor.openapigen.route.path.auth.get
+import com.papsign.ktor.openapigen.route.path.auth.post
+import com.papsign.ktor.openapigen.route.path.auth.principal
+import com.papsign.ktor.openapigen.route.path.auth.put
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
@@ -15,7 +18,7 @@ import com.piashcse.utils.ApiResponse
 import com.piashcse.utils.Response
 import com.piashcse.utils.authenticateWithJwt
 import com.piashcse.utils.extensions.OrderStatus
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
     route("order") {
@@ -29,27 +32,45 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
                     orderStatus = "pending",
                     mutableListOf(OrderItem("productId", 1)),
                 ),
-            ) { _, orderBody ->
-                orderBody.validation()
+            ) { _, addOrder: AddOrder ->
+                addOrder.validation()
+
                 respond(
                     ApiResponse.success(
-                        orderController.createOrder(principal().userId, orderBody), HttpStatusCode.OK
+                        data = orderController.createOrder(
+                            userId = principal().userId,
+                            addOrder = addOrder,
+                        ),
+                        statsCode = HttpStatusCode.Created,
                     )
                 )
             }
-            get<PagingData, Response, JwtTokenBody> { params ->
-                params.validation()
-                respond(ApiResponse.success(orderController.getOrders(principal().userId, params), HttpStatusCode.OK))
-            }
-            route("/payment").put<OrderId, Response, Unit, JwtTokenBody> { params,_  ->
-                params.validation()
+
+            get<PagingData, Response, JwtTokenBody> { pagingData ->
+                pagingData.validation()
+
                 respond(
                     ApiResponse.success(
-                        orderController.updateOrder(principal().userId, params, OrderStatus.PAID),
-                        HttpStatusCode.OK
+                        data = orderController.getOrders(
+                            userId = principal().userId,
+                            pagingData = pagingData,
+                        ),
+                        statsCode = HttpStatusCode.OK,
                     )
                 )
             }
+
+            route("/payment").put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                orderId.validation()
+
+                respond(
+                    ApiResponse.success(
+                        data = orderController.updateOrder(principal().userId, orderId, OrderStatus.PAID),
+                        statsCode = HttpStatusCode.OK,
+                    )
+                )
+            }
+
             route("/cancel").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
                 params.validation()
                 respond(
@@ -58,6 +79,7 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
                     )
                 )
             }
+
             route("/receive").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
                 params.validation()
                 respond(
@@ -67,6 +89,7 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
                 )
             }
         }
+
         authenticateWithJwt(RoleManagement.SELLER.role) {
             route("/confirm").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
                 params.validation()
@@ -77,6 +100,7 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
                     )
                 )
             }
+
             route("/deliver").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
                 params.validation()
                 respond(

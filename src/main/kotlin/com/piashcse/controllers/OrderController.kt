@@ -1,7 +1,14 @@
 package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
-import com.piashcse.entities.orders.*
+import com.piashcse.entities.orders.CartItemEntity
+import com.piashcse.entities.orders.CartItemTable
+import com.piashcse.entities.orders.OrderCreatedPayload
+import com.piashcse.entities.orders.OrderEntity
+import com.piashcse.entities.orders.OrderItemEntity
+import com.piashcse.entities.orders.OrderItemTable
+import com.piashcse.entities.orders.OrderPayload
+import com.piashcse.entities.orders.OrdersTable
 import com.piashcse.models.PagingData
 import com.piashcse.models.order.AddOrder
 import com.piashcse.models.order.OrderId
@@ -12,7 +19,11 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.and
 
 class OrderController {
-    suspend fun createOrder(userId: String, addOrder: AddOrder) = query {
+
+    suspend fun createOrder(
+        userId: String,
+        addOrder: AddOrder,
+    ): OrderCreatedPayload = query {
         val order = OrderEntity.new {
             this.userId = EntityID(userId, OrdersTable)
             this.quantity = addOrder.quantity
@@ -20,27 +31,36 @@ class OrderController {
             this.subTotal = addOrder.subTotal
             this.total = addOrder.total
         }
-        addOrder.orderItems.forEach {
+
+        addOrder.orderItems.forEach { orderItem ->
             OrderItemEntity.new {
                 orderId = EntityID(order.id.value, OrderItemTable)
-                productId = EntityID(it.productId, OrderItemTable)
-                quantity = it.quantity
+                productId = EntityID(orderItem.productId, OrderItemTable)
+                quantity = orderItem.quantity
             }
         }
-        addOrder.orderItems.forEach {
-            val productExist =
-                CartItemEntity.find { CartItemTable.userId eq userId and (CartItemTable.productId eq it.productId) }
-                    .toList().singleOrNull()
-            productExist?.delete()
 
+        addOrder.orderItems.forEach {
+            val productExist = CartItemEntity
+                .find { CartItemTable.userId eq userId and (CartItemTable.productId eq it.productId) }
+                .toList()
+                .singleOrNull()
+
+            productExist?.delete()
         }
+
         order.orderCreatedResponse()
     }
 
-   suspend fun getOrders(userId: String, pagingData: PagingData) = query {
-        OrderEntity.find { OrdersTable.userId eq userId }.limit(pagingData.limit, pagingData.offset).map {
-            it.response()
-        }
+    suspend fun getOrders(
+        userId: String,
+        pagingData: PagingData,
+    ): List<OrderPayload> = query {
+        OrderEntity.find { OrdersTable.userId eq userId }
+            .limit(pagingData.limit, pagingData.offset)
+            .map { orderEntity ->
+                orderEntity.response()
+            }
     }
 
     suspend fun updateOrder(userId: String, orderId: OrderId, orderStatus: OrderStatus) = query {
@@ -51,6 +71,6 @@ class OrderController {
             it.status = orderStatus.name.lowercase()
             it.statusCode = orderStatus.name.lowercase().orderStatusCode()
             it.response()
-        }?: "".isNotExistException()
+        } ?: "".isNotExistException()
     }
 }

@@ -2,7 +2,7 @@ package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.product.BrandEntity
-import com.piashcse.entities.product.BrandTable
+import com.piashcse.entities.product.BrandsTable
 import com.piashcse.models.PagingData
 import com.piashcse.models.bands.AddBrand
 import com.piashcse.models.bands.DeleteBrand
@@ -12,8 +12,8 @@ import com.piashcse.utils.extensions.isNotExistException
 
 class BrandController {
     suspend fun createBrand(addBand: AddBrand) = query {
-        val brandExist = BrandEntity.find { BrandTable.brandName eq addBand.brandName }.toList().singleOrNull()
-         if (brandExist == null) {
+        val brandExist = BrandEntity.find { BrandsTable.brandName eq addBand.brandName }.toList().singleOrNull()
+        if (brandExist == null) {
             BrandEntity.new {
                 brandName = addBand.brandName
             }.brandResponse()
@@ -24,13 +24,13 @@ class BrandController {
 
     suspend fun getBrand(paging: PagingData) = query {
         val brands = BrandEntity.all().limit(paging.limit, paging.offset)
-        brands.map {
-            it.brandResponse()
+        brands.map { brandEntity: BrandEntity ->
+            brandEntity.brandResponse()
         }
     }
 
     suspend fun updateBrand(updateBrand: UpdateBrand) = query {
-        val isBrandExist = BrandEntity.find { BrandTable.id eq updateBrand.brandId }.toList().singleOrNull()
+        val isBrandExist = BrandEntity.find { BrandsTable.id eq updateBrand.brandId }.toList().singleOrNull()
         isBrandExist?.let {
             it.brandName = updateBrand.brandName
             // return category response
@@ -39,8 +39,8 @@ class BrandController {
 
     }
 
-   suspend fun deleteBrand(deleteBrand: DeleteBrand) = query {
-        val isBrandExist = BrandEntity.find { BrandTable.id eq deleteBrand.brandId }.toList().singleOrNull()
+    suspend fun deleteBrand(deleteBrand: DeleteBrand) = query {
+        val isBrandExist = BrandEntity.find { BrandsTable.id eq deleteBrand.brandId }.toList().singleOrNull()
         isBrandExist?.let {
             it.delete()
             deleteBrand.brandId

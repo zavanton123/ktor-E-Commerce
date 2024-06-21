@@ -1,12 +1,13 @@
 package com.piashcse.plugins
 
-import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.controllers.JwtController
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.*
+import com.piashcse.models.user.body.JwtTokenBody
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.jwt.JWTAuthenticationProvider
+import io.ktor.server.auth.jwt.JWTCredential
+import io.ktor.server.auth.jwt.jwt
 
 fun Application.configureAuthentication() {
     install(Authentication) {
@@ -15,7 +16,7 @@ fun Application.configureAuthentication() {
          * If the token is valid, the corresponding [User] is fetched from the database.
          * The [User] can then be accessed in each [ApplicationCall].
          */
-        jwt (RoleManagement.CUSTOMER.role){
+        jwt(RoleManagement.CUSTOMER.role) {
             provideJwtAuthConfig(this, RoleManagement.CUSTOMER)
         }
         jwt(RoleManagement.ADMIN.role) {
@@ -33,10 +34,12 @@ fun Application.configureAuthentication() {
 fun provideJwtAuthConfig(jwtConfig: JWTAuthenticationProvider.Config, userRole: RoleManagement) {
     jwtConfig.verifier(JwtController.verifier)
     jwtConfig.realm = "ktor.io"
-    jwtConfig.validate {
-        val userId = it.payload.getClaim("userId").asString()
-        val email = it.payload.getClaim("email").asString()
-        val userType = it.payload.getClaim("userType").asString()
+
+    jwtConfig.validate { jwtCredential: JWTCredential ->
+        val userId = jwtCredential.payload.getClaim("userId").asString()
+        val email = jwtCredential.payload.getClaim("email").asString()
+        val userType = jwtCredential.payload.getClaim("userType").asString()
+
         if (userType == userRole.role) {
             JwtTokenBody(userId, email, userType)
         } else null
