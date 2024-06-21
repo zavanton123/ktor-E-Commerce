@@ -14,15 +14,22 @@ class ProductCategoryEntity(id: EntityID<String>) : BaseIntEntity(id, ProductCat
     companion object : BaseIntEntityClass<ProductCategoryEntity>(ProductCategoryTable)
 
     var categoryName by ProductCategoryTable.categoryName
+
     private val subCategories by ProductSubCategoryEntity referrersOn ProductSubCategoryTable.categoryId
+
     var image by ProductCategoryTable.image
-    fun response() =
-        ProductCategoryResponse(id.value, categoryName, subCategories.map { it.response() }, image)
+
+    fun response() = ProductCategoryResponse(
+        id = id.value,
+        categoryName = categoryName,
+        subCategories = subCategories.map { it.response() },
+        image = image,
+    )
 }
 
 data class ProductCategoryResponse(
     val id: String,
     val categoryName: String,
     val subCategories: List<ProductSubCategoryResponse>,
-    val image: String?
+    val image: String?,
 )

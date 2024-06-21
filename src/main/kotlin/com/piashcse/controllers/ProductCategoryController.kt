@@ -11,9 +11,10 @@ import com.piashcse.utils.extensions.alreadyExistException
 import com.piashcse.utils.extensions.isNotExistException
 
 class ProductCategoryController {
-   suspend fun createProductCategory(addProductCategory: AddProductCategory) = query {
+    suspend fun createProductCategory(addProductCategory: AddProductCategory) = query {
         val categoryExist =
-            ProductCategoryEntity.find { ProductCategoryTable.categoryName eq addProductCategory.categoryName }.toList().singleOrNull()
+            ProductCategoryEntity.find { ProductCategoryTable.categoryName eq addProductCategory.categoryName }.toList()
+                .singleOrNull()
 
         if (categoryExist == null) {
             ProductCategoryEntity.new {
@@ -31,9 +32,12 @@ class ProductCategoryController {
         }
     }
 
-   suspend fun updateProductCategory(updateProductCategory: UpdateProductCategory) = query {
-        val categoryExist =
-            ProductCategoryEntity.find { ProductCategoryTable.id eq updateProductCategory.categoryId }.toList().singleOrNull()
+    suspend fun updateProductCategory(updateProductCategory: UpdateProductCategory) = query {
+        val categoryExist = ProductCategoryEntity
+            .find { ProductCategoryTable.id eq updateProductCategory.categoryId }
+            .toList()
+            .singleOrNull()
+
         categoryExist?.let {
             it.categoryName = updateProductCategory.categoryName
             // return category response
@@ -43,9 +47,10 @@ class ProductCategoryController {
         }
     }
 
-   suspend fun deleteProductCategory(deleteProductCategory: DeleteProductCategory) = query {
+    suspend fun deleteProductCategory(deleteProductCategory: DeleteProductCategory) = query {
         val categoryExist =
-            ProductCategoryEntity.find { ProductCategoryTable.id eq deleteProductCategory.categoryId }.toList().singleOrNull()
+            ProductCategoryEntity.find { ProductCategoryTable.id eq deleteProductCategory.categoryId }.toList()
+                .singleOrNull()
         categoryExist?.let {
             categoryExist.delete()
             deleteProductCategory.categoryId
