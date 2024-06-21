@@ -1,38 +1,41 @@
 package com.piashcse.dbhelper
 
 import com.piashcse.entities.ShippingTable
-import com.piashcse.entities.product.category.ProductCategoryTable
-import com.piashcse.entities.product.category.ProductSubCategoryTable
 import com.piashcse.entities.orders.CartItemTable
 import com.piashcse.entities.orders.OrderItemTable
 import com.piashcse.entities.orders.OrdersTable
-import com.piashcse.entities.product.*
+import com.piashcse.entities.product.BrandTable
+import com.piashcse.entities.product.ProductImageTable
+import com.piashcse.entities.product.ProductTable
+import com.piashcse.entities.product.WishListTable
+import com.piashcse.entities.product.category.ProductCategoryTable
+import com.piashcse.entities.product.category.ProductSubCategoryTable
 import com.piashcse.entities.shop.ShopCategoryTable
 import com.piashcse.entities.shop.ShopTable
 import com.piashcse.entities.user.UserProfileTable
 import com.piashcse.entities.user.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import javax.sql.DataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
-import java.net.URI
-import javax.sql.DataSource
 
 object DatabaseFactory {
     private val log = LoggerFactory.getLogger(this::class.java)
+
     fun init() {
         initDB()
-        //Database.connect(hikari())
+
         transaction {
-            // print sql to std-out
             addLogger(StdOutSqlLogger)
+
             create(
                 UserTable,
                 UserProfileTable,
@@ -56,7 +59,12 @@ object DatabaseFactory {
         // database connection is handled from hikari properties
         val config = HikariConfig("/hikari.properties")
         val dataSource = HikariDataSource(config)
+
+        //// or
+        // val dataSource = hikari()
+
         runFlyway(dataSource)
+
         Database.connect(dataSource)
     }
 
@@ -71,23 +79,6 @@ object DatabaseFactory {
         return HikariDataSource(config)
     }
 
-    // For heroku deployment
-    private fun hikariForHeroku(): HikariDataSource {
-        val config = HikariConfig()
-        config.driverClassName = System.getenv("JDBC_DRIVER")
-        config.isAutoCommit = false
-        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-
-        val uri = URI(System.getenv("DATABASE_URL"))
-        val username = uri.userInfo.split(":").toTypedArray()[0]
-        val password = uri.userInfo.split(":").toTypedArray()[1]
-
-        config.jdbcUrl =
-            "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
-
-        config.validate()
-        return HikariDataSource(config)
-    }
     private fun runFlyway(datasource: DataSource) {
         val flyway = Flyway.configure().dataSource(datasource).load()
         try {

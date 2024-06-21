@@ -1,15 +1,19 @@
 package com.piashcse
 
 import com.piashcse.dbhelper.DatabaseFactory
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import com.piashcse.plugins.*
+import com.piashcse.plugins.configureAuthentication
+import com.piashcse.plugins.configureBasic
+import com.piashcse.plugins.configureRouting
+import com.piashcse.plugins.configureStatusPage
 import com.typesafe.config.ConfigFactory
-import io.ktor.server.config.*
+import io.ktor.server.config.HoconApplicationConfig
+import io.ktor.server.engine.applicationEngineEnvironment
+import io.ktor.server.engine.connector
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import org.slf4j.LoggerFactory
 
 fun main() {
-    //val environment = System.getenv("KTOR_ENVIRONMENT") ?: "development"
     val configName = "application.conf"
     val appEngineEnv = applicationEngineEnvironment {
         config = HoconApplicationConfig(ConfigFactory.load(configName))
