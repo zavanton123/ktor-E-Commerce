@@ -1,4 +1,4 @@
-package com.piashcse.route
+package com.piashcse.routes
 
 import com.papsign.ktor.openapigen.route.path.auth.get
 import com.papsign.ktor.openapigen.route.path.auth.post
@@ -7,7 +7,7 @@ import com.papsign.ktor.openapigen.route.path.auth.put
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
-import com.piashcse.controller.ProfileController
+import com.piashcse.controllers.ProfileController
 import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.models.user.body.MultipartImage
 import com.piashcse.models.user.body.UserProfileBody
@@ -16,7 +16,7 @@ import com.piashcse.utils.ApiResponse
 import com.piashcse.utils.AppConstants
 import com.piashcse.utils.Response
 import com.piashcse.utils.authenticateWithJwt
-import com.piashcse.utils.extension.fileExtension
+import com.piashcse.utils.extensions.fileExtension
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

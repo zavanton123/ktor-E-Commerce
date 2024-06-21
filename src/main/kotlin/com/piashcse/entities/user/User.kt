@@ -5,7 +5,7 @@ import com.piashcse.entities.base.BaseIntEntity
 import com.piashcse.entities.base.BaseIntEntityClass
 import com.piashcse.entities.base.BaseIntIdTable
 import com.piashcse.models.user.body.JwtTokenBody
-import com.piashcse.controller.JwtController
+import com.piashcse.controllers.JwtController
 import org.jetbrains.exposed.dao.id.EntityID
 
 object UserTable : BaseIntIdTable("users") {

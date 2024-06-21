@@ -1,4 +1,4 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.ShippingEntity
@@ -7,11 +7,10 @@ import com.piashcse.entities.orders.OrdersTable
 import com.piashcse.entities.user.UserTable
 import com.piashcse.models.shipping.AddShipping
 import com.piashcse.models.shipping.UpdateShipping
-import com.piashcse.utils.extension.alreadyExistException
-import com.piashcse.utils.extension.isNotExistException
+import com.piashcse.utils.extensions.alreadyExistException
+import com.piashcse.utils.extensions.isNotExistException
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class ShippingController {
    suspend fun addShipping(userId: String, addShipping: AddShipping) = query {

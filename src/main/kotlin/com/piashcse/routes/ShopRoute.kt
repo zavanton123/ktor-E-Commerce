@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.ShopController
+import com.piashcse.controllers.ShopController
 import com.piashcse.models.shop.*
 import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.plugins.RoleManagement

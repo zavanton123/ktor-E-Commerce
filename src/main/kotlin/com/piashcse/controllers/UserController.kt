@@ -1,4 +1,4 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.piashcse.dbhelper.query
@@ -6,10 +6,9 @@ import com.piashcse.entities.user.*
 import com.piashcse.models.user.body.*
 import com.piashcse.models.user.response.RegistrationResponse
 import com.piashcse.utils.*
-import com.piashcse.utils.extension.alreadyExistException
-import com.piashcse.utils.extension.isNotExistException
+import com.piashcse.utils.extensions.alreadyExistException
+import com.piashcse.utils.extensions.isNotExistException
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.random.Random
 
 class UserController {

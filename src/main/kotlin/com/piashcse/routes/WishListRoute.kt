@@ -1,4 +1,4 @@
-package com.piashcse.route
+package com.piashcse.routes
 
 import com.papsign.ktor.openapigen.route.path.auth.delete
 import com.papsign.ktor.openapigen.route.path.auth.get
@@ -7,7 +7,7 @@ import com.papsign.ktor.openapigen.route.path.auth.principal
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
-import com.piashcse.controller.WishListController
+import com.piashcse.controllers.WishListController
 import com.piashcse.models.product.request.ProductId
 import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.plugins.RoleManagement

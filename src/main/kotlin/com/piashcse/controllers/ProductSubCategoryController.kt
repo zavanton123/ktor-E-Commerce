@@ -1,18 +1,16 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.product.category.ProductCategoryEntity
 import com.piashcse.entities.product.category.ProductCategoryTable
 import com.piashcse.entities.product.category.ProductSubCategoryEntity
 import com.piashcse.entities.product.category.ProductSubCategoryTable
-import com.piashcse.models.PagingData
 import com.piashcse.models.subcategory.AddProductSubCategory
 import com.piashcse.models.subcategory.PagingDataWithCategoryId
 import com.piashcse.models.subcategory.UpdateProductSubCategory
-import com.piashcse.utils.extension.alreadyExistException
-import com.piashcse.utils.extension.isNotExistException
+import com.piashcse.utils.extensions.alreadyExistException
+import com.piashcse.utils.extensions.isNotExistException
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class ProductSubCategoryController {
     suspend fun createProductSubCategory(productSubCategory: AddProductSubCategory) = query {

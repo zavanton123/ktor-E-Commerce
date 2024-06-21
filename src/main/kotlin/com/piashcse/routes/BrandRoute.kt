@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.BrandController
+import com.piashcse.controllers.BrandController
 import com.piashcse.models.PagingData
 import com.piashcse.models.bands.AddBrand
 import com.piashcse.models.bands.DeleteBrand

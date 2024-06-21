@@ -1,13 +1,12 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.product.*
 import com.piashcse.models.product.request.*
-import com.piashcse.utils.extension.isNotExistException
+import com.piashcse.utils.extensions.isNotExistException
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class ProductController {
     suspend fun addProduct(userId: String, addProduct: AddProduct) = query {

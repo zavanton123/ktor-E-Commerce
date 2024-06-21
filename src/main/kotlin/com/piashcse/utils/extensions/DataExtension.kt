@@ -1,4 +1,4 @@
-package com.piashcse.utils.extension
+package com.piashcse.utils.extensions
 
 import kotlinx.datetime.*
 import org.jetbrains.exposed.sql.Column

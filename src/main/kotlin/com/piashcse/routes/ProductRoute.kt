@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.ProductController
+import com.piashcse.controllers.ProductController
 import com.piashcse.models.product.request.*
 import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.plugins.RoleManagement
@@ -17,7 +17,7 @@ import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
 import com.piashcse.models.user.body.MultipartImage
 import com.piashcse.utils.AppConstants
-import com.piashcse.utils.extension.fileExtension
+import com.piashcse.utils.extensions.fileExtension
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

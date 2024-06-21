@@ -1,7 +1,7 @@
-package com.piashcse.route
+package com.piashcse.routes
 
 import com.papsign.ktor.openapigen.route.path.auth.*
-import com.piashcse.controller.CartController
+import com.piashcse.controllers.CartController
 import com.piashcse.models.PagingData
 import com.piashcse.models.user.body.JwtTokenBody
 import com.piashcse.plugins.RoleManagement

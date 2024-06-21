@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.ProductCategoryController
+import com.piashcse.controllers.ProductCategoryController
 import com.piashcse.models.PagingData
 import com.piashcse.models.category.AddProductCategory
 import com.piashcse.models.category.DeleteProductCategory

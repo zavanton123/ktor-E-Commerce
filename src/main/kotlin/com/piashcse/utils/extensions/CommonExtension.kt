@@ -1,4 +1,4 @@
-package com.piashcse.utils.extension
+package com.piashcse.utils.extensions
 
 import com.piashcse.utils.CommonException
 

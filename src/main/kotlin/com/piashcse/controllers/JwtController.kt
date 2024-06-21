@@ -1,4 +1,4 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*

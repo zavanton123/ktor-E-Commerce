@@ -3,17 +3,18 @@ package com.piashcse.plugins
 import com.papsign.ktor.openapigen.OpenAPIGen
 import com.papsign.ktor.openapigen.schema.namer.DefaultSchemaNamer
 import com.papsign.ktor.openapigen.schema.namer.SchemaNamer
-import io.ktor.serialization.gson.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.callloging.*
-import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.serialization.gson.gson
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import kotlin.reflect.KType
 
 fun Application.configureBasic() {
-   /* install(Compression)
-    install(CORS) {
-        anyHost()
-    }*/
+    /* install(Compression)
+     install(CORS) {
+         anyHost()
+     }*/
     install(CallLogging)
     install(ContentNegotiation) {
         gson {

@@ -1,18 +1,16 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.orders.CartItemEntity
 import com.piashcse.entities.orders.CartItemTable
 import com.piashcse.entities.product.ProductEntity
 import com.piashcse.entities.product.ProductTable
-import com.piashcse.entities.user.UserTable
 import com.piashcse.models.PagingData
 import com.piashcse.models.cart.*
-import com.piashcse.utils.extension.alreadyExistException
-import com.piashcse.utils.extension.isNotExistException
+import com.piashcse.utils.extensions.alreadyExistException
+import com.piashcse.utils.extensions.isNotExistException
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class CartController {
    suspend fun addToCart(userId: String, addCart: AddCart) = query {

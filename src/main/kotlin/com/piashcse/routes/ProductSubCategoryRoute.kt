@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.ProductSubCategoryController
+import com.piashcse.controllers.ProductSubCategoryController
 import com.piashcse.models.subcategory.AddProductSubCategory
 import com.piashcse.models.subcategory.DeleteSubCategory
 import com.piashcse.models.subcategory.UpdateProductSubCategory

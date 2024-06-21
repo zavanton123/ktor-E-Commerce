@@ -1,10 +1,10 @@
-package com.piashcse.route
+package com.piashcse.routes
 
 import com.papsign.ktor.openapigen.route.path.auth.*
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
-import com.piashcse.controller.OrderController
+import com.piashcse.controllers.OrderController
 import com.piashcse.models.PagingData
 import com.piashcse.models.order.AddOrder
 import com.piashcse.models.order.OrderId
@@ -14,7 +14,7 @@ import com.piashcse.plugins.RoleManagement
 import com.piashcse.utils.ApiResponse
 import com.piashcse.utils.Response
 import com.piashcse.utils.authenticateWithJwt
-import com.piashcse.utils.extension.OrderStatus
+import com.piashcse.utils.extensions.OrderStatus
 import io.ktor.http.*
 
 fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {

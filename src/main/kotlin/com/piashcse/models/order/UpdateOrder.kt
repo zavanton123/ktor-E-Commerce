@@ -1,8 +1,7 @@
 package com.piashcse.models.order
 
-import com.papsign.ktor.openapigen.annotations.parameters.PathParam
 import com.papsign.ktor.openapigen.annotations.parameters.QueryParam
-import com.piashcse.utils.extension.OrderStatus
+import com.piashcse.utils.extensions.OrderStatus
 import org.valiktor.functions.isIn
 import org.valiktor.functions.isNotNull
 import org.valiktor.validate

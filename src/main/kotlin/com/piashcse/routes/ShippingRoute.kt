@@ -1,10 +1,10 @@
-package com.piashcse.route
+package com.piashcse.routes
 
 import com.papsign.ktor.openapigen.route.path.auth.*
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
-import com.piashcse.controller.ShippingController
+import com.piashcse.controllers.ShippingController
 import com.piashcse.models.shipping.AddShipping
 import com.piashcse.models.shipping.OrderId
 import com.piashcse.models.shipping.UpdateShipping

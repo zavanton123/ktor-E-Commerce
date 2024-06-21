@@ -1,6 +1,6 @@
-package com.piashcse.route
+package com.piashcse.routes
 
-import com.piashcse.controller.UserController
+import com.piashcse.controllers.UserController
 import com.piashcse.entities.user.ChangePassword
 import com.piashcse.entities.user.UsersEntity
 import com.piashcse.models.user.body.*

@@ -1,4 +1,4 @@
-package com.piashcse.controller
+package com.piashcse.controllers
 
 import com.piashcse.dbhelper.query
 import com.piashcse.entities.product.BrandEntity
@@ -7,9 +7,8 @@ import com.piashcse.models.PagingData
 import com.piashcse.models.bands.AddBrand
 import com.piashcse.models.bands.DeleteBrand
 import com.piashcse.models.bands.UpdateBrand
-import com.piashcse.utils.extension.alreadyExistException
-import com.piashcse.utils.extension.isNotExistException
-import org.jetbrains.exposed.sql.transactions.transaction
+import com.piashcse.utils.extensions.alreadyExistException
+import com.piashcse.utils.extensions.isNotExistException
 
 class BrandController {
     suspend fun createBrand(addBand: AddBrand) = query {
