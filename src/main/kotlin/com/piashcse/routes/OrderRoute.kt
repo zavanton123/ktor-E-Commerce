@@ -25,12 +25,12 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
         authenticateWithJwt(RoleManagement.CUSTOMER.role) {
             post<Unit, Response, AddOrder, JwtTokenBody>(
                 exampleRequest = AddOrder(
-                    1,
-                    100f,
-                    100f,
-                    2f,
+                    quantity = 1,
+                    subTotal = 100f,
+                    total = 100f,
+                    shippingCharge = 2f,
                     orderStatus = "pending",
-                    mutableListOf(OrderItem("productId", 1)),
+                    orderItems = mutableListOf(OrderItem("productId", 1)),
                 ),
             ) { _, addOrder: AddOrder ->
                 addOrder.validation()
@@ -60,56 +60,87 @@ fun NormalOpenAPIRoute.orderRoute(orderController: OrderController) {
                 )
             }
 
-            route("/payment").put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
-                orderId.validation()
+            route("/payment")
+                .put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                    orderId.validation()
 
-                respond(
-                    ApiResponse.success(
-                        data = orderController.updateOrder(principal().userId, orderId, OrderStatus.PAID),
-                        statsCode = HttpStatusCode.OK,
+                    respond(
+                        ApiResponse.success(
+                            data = orderController.updateOrder(
+                                userId = principal().userId,
+                                orderId = orderId,
+                                orderStatus = OrderStatus.PAID,
+                            ),
+                            statsCode = HttpStatusCode.OK,
+                        )
                     )
-                )
-            }
+                }
 
-            route("/cancel").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
-                params.validation()
-                respond(
-                    ApiResponse.success(
-                        orderController.updateOrder(principal().userId, params, OrderStatus.CANCELED), HttpStatusCode.OK
-                    )
-                )
-            }
+            route("/cancel")
+                .put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                    orderId.validation()
 
-            route("/receive").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
-                params.validation()
-                respond(
-                    ApiResponse.success(
-                        orderController.updateOrder(principal().userId, params, OrderStatus.RECEIVED), HttpStatusCode.OK
+                    respond(
+                        ApiResponse.success(
+                            data = orderController.updateOrder(
+                                userId = principal().userId,
+                                orderId = orderId,
+                                orderStatus = OrderStatus.CANCELED
+                            ),
+                            statsCode = HttpStatusCode.NoContent,
+                        )
                     )
-                )
-            }
+                }
+
+            route("/receive")
+                .put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                    orderId.validation()
+
+                    respond(
+                        ApiResponse.success(
+                            data = orderController.updateOrder(
+                                userId = principal().userId,
+                                orderId = orderId,
+                                orderStatus = OrderStatus.RECEIVED,
+                            ),
+                            statsCode = HttpStatusCode.OK,
+                        )
+                    )
+                }
         }
 
         authenticateWithJwt(RoleManagement.SELLER.role) {
-            route("/confirm").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
-                params.validation()
-                respond(
-                    ApiResponse.success(
-                        orderController.updateOrder(principal().userId, params, OrderStatus.CONFIRMED),
-                        HttpStatusCode.OK
-                    )
-                )
-            }
+            route("/confirm")
+                .put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                    orderId.validation()
 
-            route("/deliver").put<OrderId, Response, Unit, JwtTokenBody> { params, _ ->
-                params.validation()
-                respond(
-                    ApiResponse.success(
-                        orderController.updateOrder(principal().userId, params, OrderStatus.DELIVERED),
-                        HttpStatusCode.OK
+                    respond(
+                        ApiResponse.success(
+                            data = orderController.updateOrder(
+                                userId = principal().userId,
+                                orderId = orderId,
+                                orderStatus = OrderStatus.CONFIRMED,
+                            ),
+                            statsCode = HttpStatusCode.OK,
+                        )
                     )
-                )
-            }
+                }
+
+            route("/deliver")
+                .put<OrderId, Response, Unit, JwtTokenBody> { orderId, _ ->
+                    orderId.validation()
+
+                    respond(
+                        ApiResponse.success(
+                            data = orderController.updateOrder(
+                                userId = principal().userId,
+                                orderId = orderId,
+                                orderStatus = OrderStatus.DELIVERED,
+                            ),
+                            statsCode = HttpStatusCode.OK,
+                        )
+                    )
+                }
         }
     }
 }

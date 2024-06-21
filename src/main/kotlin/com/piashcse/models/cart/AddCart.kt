@@ -8,7 +8,7 @@ import org.valiktor.validate
 
 data class AddCart(
     @QueryParam("productId") val productId: String,
-    @QueryParam("quantity") val quantity: Int
+    @QueryParam("quantity") val quantity: Int,
 ) {
     fun validation() {
         validate(this) {

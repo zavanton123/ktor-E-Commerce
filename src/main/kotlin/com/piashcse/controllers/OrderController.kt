@@ -24,6 +24,7 @@ class OrderController {
         userId: String,
         addOrder: AddOrder,
     ): OrderCreatedPayload = query {
+        // create order
         val order = OrderEntity.new {
             this.userId = EntityID(userId, OrdersTable)
             this.quantity = addOrder.quantity
@@ -32,6 +33,7 @@ class OrderController {
             this.total = addOrder.total
         }
 
+        // create order_items
         addOrder.orderItems.forEach { orderItem ->
             OrderItemEntity.new {
                 orderId = EntityID(order.id.value, OrderItemTable)
@@ -40,15 +42,17 @@ class OrderController {
             }
         }
 
+        // delete the products from the cart when creating a new order
         addOrder.orderItems.forEach {
             val productExist = CartItemEntity
-                .find { CartItemTable.userId eq userId and (CartItemTable.productId eq it.productId) }
+                .find { (CartItemTable.userId eq userId) and (CartItemTable.productId eq it.productId) }
                 .toList()
                 .singleOrNull()
 
             productExist?.delete()
         }
 
+        // order id is returned
         order.orderCreatedResponse()
     }
 
@@ -63,10 +67,16 @@ class OrderController {
             }
     }
 
-    suspend fun updateOrder(userId: String, orderId: OrderId, orderStatus: OrderStatus) = query {
-        val orderExist =
-            OrderEntity.find { OrdersTable.userId eq userId and (OrdersTable.id eq orderId.orderId) }.toList()
-                .singleOrNull()
+    suspend fun updateOrder(
+        userId: String,
+        orderId: OrderId,
+        orderStatus: OrderStatus,
+    ) = query {
+        val orderExist = OrderEntity
+            .find { (OrdersTable.userId eq userId) and (OrdersTable.id eq orderId.orderId) }
+            .toList()
+            .singleOrNull()
+
         orderExist?.let {
             it.status = orderStatus.name.lowercase()
             it.statusCode = orderStatus.name.lowercase().orderStatusCode()

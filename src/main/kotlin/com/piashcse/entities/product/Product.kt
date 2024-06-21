@@ -56,28 +56,29 @@ class ProductEntity(id: EntityID<String>) : BaseIntEntity(id, ProductTable) {
     var buyOneGetOne by ProductTable.buyOneGetOne
     var imageOne by ProductTable.imageOne
     var imageTwo by ProductTable.imageTwo
+
     fun response() = Product(
-        id.value,
-        categoryId.value,
-        subCategoryId?.value,
-        brandId?.value,
-        productName,
-        productCode,
-        productQuantity,
-        productDetail,
-        price,
-        discountPrice,
-        status,
-        videoLink,
-        mainSlider,
-        hotDeal,
-        bestRated,
-        midSlider,
-        hotNew,
-        trend,
-        buyOneGetOne,
-        imageOne,
-        imageTwo
+        id = id.value,
+        categoryId = categoryId.value,
+        subCategoryId = subCategoryId?.value,
+        brandId = brandId?.value,
+        productName = productName,
+        productCode = productCode,
+        productQuantity = productQuantity,
+        productDetail = productDetail,
+        price = price,
+        discountPrice = discountPrice,
+        status = status,
+        videoLink = videoLink,
+        mainSlider = mainSlider,
+        hotDeal = hotDeal,
+        bestRated = bestRated,
+        midSlider = midSlider,
+        hotNew = hotNew,
+        trend = trend,
+        buyOneGetOne = buyOneGetOne,
+        imageOne = imageOne,
+        imageTwo = imageTwo
     )
 }
 

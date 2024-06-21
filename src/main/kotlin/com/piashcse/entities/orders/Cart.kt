@@ -20,11 +20,18 @@ class CartItemEntity(id: EntityID<String>) : BaseIntEntity(id, CartItemTable) {
     var userId by CartItemTable.userId
     var productId by CartItemTable.productId
     var quantity by CartItemTable.quantity
-    fun cartResponse(product: Product? = null) = Cart(productId.value, quantity, product)
+
+    fun cartResponse(
+        product: Product? = null,
+    ) = Cart(
+        productId = productId.value,
+        quantity = quantity,
+        product = product,
+    )
 }
 
 data class Cart(
     val productId: String,
     val quantity: Int,
-    val product: Product?
+    val product: Product?,
 )
