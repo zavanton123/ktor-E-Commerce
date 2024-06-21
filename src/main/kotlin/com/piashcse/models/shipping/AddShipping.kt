@@ -4,7 +4,6 @@ import org.valiktor.functions.isEmail
 import org.valiktor.functions.isNotNull
 import org.valiktor.validate
 
-
 data class AddShipping(
     val orderId: String,
     val shipAddress: String,
@@ -12,7 +11,7 @@ data class AddShipping(
     val shipPhone: Int,
     val shipName: String?,
     val shipEmail: String?,
-    val shipCountry: String?
+    val shipCountry: String?,
 ) {
     fun validation() {
         validate(this) {

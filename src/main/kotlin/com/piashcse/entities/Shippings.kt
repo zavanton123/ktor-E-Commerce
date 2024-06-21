@@ -7,7 +7,7 @@ import com.piashcse.entities.orders.OrdersTable
 import com.piashcse.entities.user.UserTable
 import org.jetbrains.exposed.dao.id.EntityID
 
-object ShippingTable : BaseIntIdTable("Shipping") {
+object ShippingTable : BaseIntIdTable("shipping") {
     val userId = reference("user_id", UserTable.id)
     val orderId = reference("order_id", OrdersTable.id)
     val shippingAddress = varchar("ship_address", 150)
@@ -30,9 +30,16 @@ class ShippingEntity(id: EntityID<String>) : BaseIntEntity(id, ShippingTable) {
     var shippingEmail by ShippingTable.shippingEmail
     var shippingCountry by ShippingTable.shippingCountry
 
-
-    fun response() =
-        Shipping(userId.value, orderId.value, shippingAddress, shippingCity, shippingPhone, shippingName, shippingEmail, shippingCountry)
+    fun response() = Shipping(
+        userId = userId.value,
+        orderId = orderId.value,
+        shipAddress = shippingAddress,
+        shipCity = shippingCity,
+        shipPhone = shippingPhone,
+        shipName = shippingName,
+        shipEmail = shippingEmail,
+        shipCountry = shippingCountry,
+    )
 }
 
 data class Shipping(
@@ -43,5 +50,5 @@ data class Shipping(
     var shipPhone: Int,
     var shipName: String?,
     var shipEmail: String?,
-    var shipCountry: String?
+    var shipCountry: String?,
 )

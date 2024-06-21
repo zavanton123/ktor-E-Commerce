@@ -1,6 +1,10 @@
 package com.piashcse.routes
 
-import com.papsign.ktor.openapigen.route.path.auth.*
+import com.papsign.ktor.openapigen.route.path.auth.delete
+import com.papsign.ktor.openapigen.route.path.auth.get
+import com.papsign.ktor.openapigen.route.path.auth.post
+import com.papsign.ktor.openapigen.route.path.auth.principal
+import com.papsign.ktor.openapigen.route.path.auth.put
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
@@ -13,39 +17,64 @@ import com.piashcse.plugins.RoleManagement
 import com.piashcse.utils.ApiResponse
 import com.piashcse.utils.Response
 import com.piashcse.utils.authenticateWithJwt
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 fun NormalOpenAPIRoute.shippingRoute(shippingController: ShippingController) {
     route("shipping") {
         authenticateWithJwt(RoleManagement.CUSTOMER.role) {
-            post<Unit, Response, AddShipping, JwtTokenBody> { _, requestBody ->
-                requestBody.validation()
+            post<Unit, Response, AddShipping, JwtTokenBody> { _, addShipping ->
+                addShipping.validation()
+
                 respond(
                     ApiResponse.success(
-                        shippingController.addShipping(principal().userId, requestBody), HttpStatusCode.OK
+                        data = shippingController.addShipping(
+                            userId = principal().userId,
+                            addShipping = addShipping,
+                        ),
+                        statsCode = HttpStatusCode.Created,
                     )
                 )
             }
-            get<OrderId, Response, JwtTokenBody> { params ->
+
+            get<OrderId, Response, JwtTokenBody> { orderId ->
                 respond(
                     ApiResponse.success(
-                        shippingController.getShipping(principal().userId, params.orderId), HttpStatusCode.OK
+                        data = shippingController.getShipping(
+                            userId = principal().userId,
+                            orderId = orderId.orderId,
+                        ),
+                        statsCode = HttpStatusCode.OK,
                     )
                 )
             }
-            route("/{orderId}").put<UpdateShipping, Response, Unit, JwtTokenBody> { params, _ ->
-                params.validation()
-                shippingController.updateShipping(
-                    principal().userId, params
-                ).let {
-                    respond(ApiResponse.success(it, HttpStatusCode.OK))
+
+            route("/{orderId}")
+                .put<UpdateShipping, Response, Unit, JwtTokenBody> { updateShipping, _ ->
+                    updateShipping.validation()
+
+                    val shipping = shippingController.updateShipping(
+                        userId = principal().userId,
+                        updateShipping = updateShipping,
+                    )
+
+                    respond(
+                        ApiResponse.success(
+                            data = shipping,
+                            statsCode = HttpStatusCode.OK,
+                        )
+                    )
                 }
-            }
-            delete<OrderId, Response, JwtTokenBody> { params ->
-                params.validation()
+
+            delete<OrderId, Response, JwtTokenBody> { orderId ->
+                orderId.validation()
+
                 respond(
                     ApiResponse.success(
-                        shippingController.deleteShipping(principal().userId, params.orderId), HttpStatusCode.OK
+                        data = shippingController.deleteShipping(
+                            userId = principal().userId,
+                            orderId = orderId.orderId,
+                        ),
+                        statsCode = HttpStatusCode.NoContent,
                     )
                 )
             }
