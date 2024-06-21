@@ -15,13 +15,16 @@ fun Application.configureBasic() {
      install(CORS) {
          anyHost()
      }*/
+
     install(CallLogging)
+
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
             // serializeNulls()
         }
     }
+
     // Open api configuration
     install(OpenAPIGen) {
         // basic info
